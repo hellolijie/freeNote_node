@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript">
+
+    </script>
+</head>
+<body>
+<div id="app">
+    {{ message }}
+</div>
+
+<div id="app2">
+        <span v-bind:title="message">
+            鼠标悬浮几秒查看动态信息
+        </span>
+</div>
+
+<div id="app3">
+        <span v-if="seen">
+            看到
+        </span>
+</div>
+
+<div id="app4">
+    <ol>
+        <li v-for="todo in todos">
+            {{todo.text}}
+        </li>
+    </ol>
+</div>
+
+<div id="app5">
+    <p>{{message}}</p>
+    <button v-on:click="reverseMessage">逆转消息</button>
+</div>
+
+<div id="app6">
+    <p>{{message}}</p>
+    <input v-model="message">
+</div>
+
+<div id="app7">
+    <ol>
+        <!-- 现在我们为每个todo-item提供待办项对象    -->
+        <!-- 待办项对象是变量，即其内容可以是动态的 -->
+        <todo-item v-for="item in groceryList" v-bind:todo="item"></todo-item>
+    </ol>
+</div>
+</body>
+
+<script type="text/javascript" src="/javascripts/libs/vue.js"></script>
+<script type="text/javascript">
+    Vue.component('todo-item', {
+        props: ['todo'],
+        template: '<li>{{ todo.text }}</li>'
+    })
+    var app7 = new Vue({
+        el: '#app7',
+        data: {
+            groceryList: [
+                { text: '蔬菜' },
+                { text: '奶酪' },
+                { text: '随便其他什么人吃的东西' }
+            ]
+        }
+    })
+
+    var app6 = new Vue({
+        el: '#app6',
+        data: {
+            message: 'hello word'
+        }
+    })
+
+    var app5 =new Vue({
+        el: '#app5',
+        data : {
+            message: 'hello word'
+        },
+        methods: {
+            reverseMessage: function () {
+                this.message = this.message.split('').reverse().join('')
+            }
+        }
+    })
+
+    var app4 = new Vue({
+        el: '#app4',
+        data :{
+            todos:[
+                { text: '学习 JavaScript' },
+                { text: '学习 Vue' },
+                { text: '整个牛项目' }
+            ]
+        }
+    })
+
+    var app3 = new Vue({
+        el: '#app3',
+        data :{
+            seen : true
+        }
+    })
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!'
+        }
+    })
+
+    var app2 = new Vue({
+        el: '#app2',
+        data: {
+            message: '页面加载于' + new Date()
+        }
+    })
+
+</script>
+</html>

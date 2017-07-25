@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap@next/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+
+    <style type="text/css">
+        #temp{
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="temp">
+    <b-alert show>
+        Default Alert
+    </b-alert>
+
+    <b-alert variant="success" show>
+        Success Alert
+    </b-alert>
+</div>
+
+</body>
+
+<script type="text/javascript" src="/javascripts/libs/vue.js"></script>
+<script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+<script src="//unpkg.com/tether@latest/dist/js/tether.min.js"></script>
+<script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
+<script type="text/javascript">
+    var temp = new Vue({
+        el: '#temp',
+        data: {
+            classObject: {
+
+            }
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,29 @@
+body {
+  /*padding: 10px;*/
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #f5f7f9;
+}
+
+.center_layout{
+  width: 800px;
+  margin: 0 auto
+}
+
+#note_edit_container{
+  width: 100%;
+  position: relative;
+}
+
+#note_edit_button_container{
+  position: absolute;
+  right: 0px;
+}
+
+#note_edit_input_container{
+  width: 100%;
+  position: absolute;
+}
+
+a {
+  color: #00B7FF;
+}

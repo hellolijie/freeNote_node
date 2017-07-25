@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="//unpkg.com/iview/dist/styles/iview.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+
+    <script type="text/javascript" src="/javascripts/libs/vue.js"></script>
+    <script src="//unpkg.com/iview/dist/iview.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+<div id="layout">
+    <i-menu mode="horizontal" theme="light" active-name="menu_note" v-on:on-select="onTabSelect">
+        <div class="center_layout">
+            <Menu-item name="menu_note">
+                笔记
+            </Menu-item>
+            <Menu-item name="menu_statistics">
+                统计
+            </Menu-item>
+            <Menu-item name="menu_setting">
+                设置
+            </Menu-item>
+        </div>
+    </i-menu>
+
+    <div id="menu_content" class="center_layout">
+        <div v-if="activeMenu==='menu_note'">
+            <div id="note_edit_container">
+                <div id="note_edit_input_container">
+                    <i-input id="note_edit_input"
+                             v-model="noteEdit.inputValue"
+                             v-on:on-change="onChangeNoteEditText"
+                             type="textarea" :rows="2"
+                             placeholder="请输入...">
+                    </i-input>
+
+                    <Button-group size="small">
+                        <i-button v-for="word in noteEdit.wordArr" :key= "word.word" :name="word.word"
+                                  v-on:click="onWordClick(word)"
+                                  :type = "word.type" :loading = "word.loading">
+                            {{word.word}}
+                        </i-button>
+                    </Button-group>
+
+                    <div>
+                        <translate-item v-for="word in noteEdit.newWordArr" v-bind:word="word" :key="word.word" :name="word.word"></translate-item>
+                    </div>
+
+                    <i-button>完成</i-button>
+
+                    <div id="note_list_container">
+                        <div v-for="note in noteList.data" :key="note.id" :name="note.id">
+                            <p>{{note.note}}</p>
+                            <ol>
+                                <todo-item v-for="item in note.wordArr" v-bind:todo="item" :key="item" :name="item"></todo-item>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div v-if="activeMenu==='menu_statistics'">
+            <Input v-model="value6" type="textarea" :rows="4" placeholder="请输入...">
+        </div>
+
+        <div v-if="activeMenu==='menu_setting'">
+            <Input v-model="value6" type="textarea" :rows="4" placeholder="请输入...">
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+<script type="text/javascript">
+    /*********************************自定义方法***************************************/
+
+    /**
+     * 查找单词对象
+     * @param word
+     * @param wordArr
+     * @returns {number}
+     */
+    var indexOfWord = function (word, wordArr) {
+        var len = wordArr.length;
+        for (var i= 0; i < len; i++){
+            if (wordArr[i].word === word.word){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /*******************************Vue**************************************/
+    Vue.component('translate-item', {
+        props: ['word'],
+        template: '<div><span>{{ word.word }}</span>&nbsp;&nbsp;<span>{{ word.translate }}</span></div>'
+    });
+
+    var layout = new Vue({
+        el: '#layout',
+        data: {
+            activeMenu: 'menu_note',
+            noteEdit:{
+                inputValue: '',         //输入框内容
+                wordArr: [],        //单词集合
+                newWordArr: []      //选中的生词集合
+            },
+            noteList:{
+                data:[
+//                        {
+//                        id:'dhid',
+//                        note: 'hello word',
+//                        wordArr: ['hello', 'word']
+//                        }
+                    ]
+            }
+        },
+        methods: {
+            onTabSelect: function (name) {      //顶部菜单切换
+                this.activeMenu = name;
+            },
+            onChangeNoteEditText: function () {        //笔记编辑输入框内容改变
+                //拆分单词
+                var wordArr = this.noteEdit.inputValue.split(' ');
+                this.noteEdit.wordArr = [];
+                var len = wordArr.length;
+                for (var i = 0;  i < len; i++){
+                    var wordObj = {};
+                    wordObj.word = wordArr[i];
+                    wordObj.type = 'dashed';
+                    wordObj.loading = false;
+                    wordObj.translate = ' ';
+                    this.noteEdit.wordArr.push(wordObj);
+                }
+
+                //过滤生词
+                len = this.noteEdit.newWordArr.length;
+                for (var j = len -1; j > -1; j--){
+                    var wordIndex = indexOfWord(this.noteEdit.newWordArr[j], this.noteEdit.wordArr);
+                    if (wordIndex === -1){
+                        this.noteEdit.newWordArr.splice(j, 1);
+                    }
+                    else {
+                        this.noteEdit.wordArr[wordIndex].type = 'success';
+                    }
+                }
+            },
+            onWordClick: function (word) {     //生词选中
+//              alert(word);
+                var wordIndex = indexOfWord(word, this.noteEdit.newWordArr);
+                if(wordIndex > -1){
+                    this.noteEdit.newWordArr.splice(wordIndex, 1);
+                    word.type = 'dashed';
+                }
+                else {
+                  this.noteEdit.newWordArr.push(word);
+                  word.type = 'success';
+
+                  translate(word);
+                }
+
+            }
+        }
+    });
+
+    /***************************网络****************************************/
+    var netInstance = axios.create({
+        timeout: 1000,
+//        headers: {'Content-Type': 'application/json'}
+    });
+
+    var translate = function (word) {
+        word.loading = true;
+        netInstance.post('/translate', {
+            newWord: word.word
+
+        })
+        .then(function (response) {
+            word.loading = false;
+            if (response.data.code === 1){
+                word.translate = response.data.result.cn;
+            }
+        })
+        .catch(function (error) {
+            word.loading = false;
+        });
+
+    }
+
+</script>
+</html>

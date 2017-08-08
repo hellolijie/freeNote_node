@@ -6,8 +6,8 @@ module.exports = function (sequelize, DataTypes) {
             id:{type:DataTypes.BIGINT(11), autoIncrement:true, primaryKey : true, unique : true},
             noteId:{ type: DataTypes.STRING,  allowNull: false, unique : true, comment:'平台无关id'},
             sentence: { type: DataTypes.STRING,  allowNull: false, comment:'笔记内容' },
-            wordsIndexes: { type: DataTypes.STRING, allowNull: false, comment:'生词位置索引' },
-            tagId: { type: DataTypes.STRING, allowNull: false,  comment:'笔记标签' },
+            newWordsArr: { type: DataTypes.STRING, allowNull: false, comment:'生词数组' },
+            tag: { type: DataTypes.STRING, allowNull: false,  comment:'笔记标签' },
             playCount: {type: DataTypes.INTEGER, allowNull: true, comment:'播放次数'}
         },
         {

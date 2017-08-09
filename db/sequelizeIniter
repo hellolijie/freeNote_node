@@ -14,6 +14,7 @@ var sequelize = new Sequelize(config.database, config.user, config.password, {
 var User = sequelize.import('./model/user.js');
 var Words = sequelize.import('./model/words.js');
 var Note = sequelize.import('./model/note.js');
+var Tag = sequelize.import('./model/tag.js');
 
 sequelize.sync({force : false})
     .then(function () {
@@ -25,5 +26,6 @@ sequelize.sync({force : false})
 module.exports = {
     User : User,
     Words : Words,
-    Note: Note
+    Note: Note,
+    Tag: Tag
 }

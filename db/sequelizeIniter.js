@@ -16,6 +16,8 @@ var Words = sequelize.import('./model/helloABC/words.js');
 var Note = sequelize.import('./model/helloABC/note.js');
 var Tag = sequelize.import('./model/tag.js');
 
+var MindNode = sequelize.import('./model/freeMind/mindNode.js');
+
 sequelize.sync({force : false})
     .then(function () {
         console.log('sync-suc');})
@@ -27,5 +29,6 @@ module.exports = {
     User : User,
     Words : Words,
     Note: Note,
-    Tag: Tag
+    Tag: Tag,
+    MindNode: MindNode
 }

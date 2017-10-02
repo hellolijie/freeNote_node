@@ -4,8 +4,8 @@
 var express = require('express');
 var router = express.Router();
 
-var wordsDao = require('../db/dao/wordsDao.js');
-var responseUtil = require('./responseUtil.js');
+var wordsDao = require('../../db/dao/helloABC/wordsDao.js');
+var responseUtil = require('../responseUtil.js');
 
 router.get('/', function(req, res, next) {
     wordsDao.translate('hello')

@@ -17,6 +17,9 @@ router.get('/add', function(req, res, next) {
         }, next);
 });
 
+/**
+ * 添加标签
+ */
 router.post('/add', function(req, res, next) {
     var tagId = req.body.tagId;
     var tagName = req.body.tagName;
@@ -24,6 +27,19 @@ router.post('/add', function(req, res, next) {
     tagDao.addTag(tagId, tagName)
         .then(function (note) {
             responseUtil.suc(res, note);
+        }, next);
+});
+
+/**
+ * 获取标签
+ */
+router.post('/getTags', function(req, res, next) {
+    var limit = req.body.limit;
+    var page = req.body.page;
+
+    tagDao.getTags(limit, page)
+        .then(function (result) {
+            responseUtil.suc(res, result);
         }, next);
 });
 

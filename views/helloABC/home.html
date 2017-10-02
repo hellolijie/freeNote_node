@@ -10,6 +10,7 @@
     <script type="text/javascript" src="/javascripts/libs/vue.js"></script>
     <script src="//unpkg.com/iview/dist/iview.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="http://cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
 
 </head>
 <body>
@@ -51,7 +52,7 @@
                         <translate-item v-for="word in noteEdit.newWordArr" v-bind:word="word" :key="word.word" :name="word.word"></translate-item>
                     </div>
 
-                    <i-button>完成</i-button>
+                    <i-button v-on:click="onNoteComplete">完成</i-button>
 
                     <div id="note_list_container">
                         <div v-for="note in noteList.data" :key="note.id" :name="note.id">
@@ -96,7 +97,14 @@
             }
         }
         return -1;
-    }
+    };
+
+    /**
+     * 创建平台无关ID
+     */
+    var createPlatformnessId = function(idName){
+        return md5(idName + Math.random() + new Date());
+    };
 
     /*******************************Vue**************************************/
     Vue.component('translate-item', {
@@ -167,6 +175,23 @@
                   translate(word);
                 }
 
+            },
+            onNoteComplete: function () {
+                var noteId = createPlatformnessId('note');
+                var sentence = this.noteEdit.inputValue;
+                var newWordsArrStr = '';
+                var len = this.noteEdit.newWordArr.length;
+                for (var i = 0; i < len; i++){
+                    if (i != 0){
+                        newWordsArrStr += ',';
+                    }
+                    newWordsArrStr += this.noteEdit.newWordArr[i].word;
+                }
+
+                if (sentence.length > 0){
+                    addNote(noteId, sentence, newWordsArrStr);
+                }
+
             }
         }
     });
@@ -177,11 +202,14 @@
 //        headers: {'Content-Type': 'application/json'}
     });
 
+    /**
+     * 翻译
+     * @param word
+     */
     var translate = function (word) {
         word.loading = true;
-        netInstance.post('/translate', {
+        netInstance.post('/helloABC/translate', {
             newWord: word.word
-
         })
         .then(function (response) {
             word.loading = false;
@@ -193,6 +221,26 @@
             word.loading = false;
         });
 
+    }
+
+    /**
+     * 添加笔记
+     * @param noteId
+     * @param sentence
+     * @param newWordsArr
+     */
+    var addNote = function (noteId, sentence, newWordsArrStr) {
+        netInstance.post('/helloABC/note/add', {
+            noteId: noteId,
+            sentence: sentence,
+            newWordsArr: newWordsArrStr
+        })
+        .then(function (response) {
+            alert(response.data.result.noteId);
+        })
+        .catch(function (error) {
+            alert(error);
+        });
     }
 
 </script>

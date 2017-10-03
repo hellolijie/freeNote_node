@@ -10,6 +10,7 @@ var users = require('./routes/users');
 var translate = require('./routes/helloABC/translate');
 var note = require('./routes/helloABC/note');
 var tag = require('./routes/tag');
+var syncTask = require('./routes/freeMind/syncTask');
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use('/users', users);
 app.use('/helloABC/translate', translate);
 app.use('/helloABC/note', note);
 app.use('/tag', tag);
+app.use('/sync/push', syncTask);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

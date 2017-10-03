@@ -1,0 +1,14 @@
+{
+  "url": "/sync/push",
+
+  "mindNode":[{
+    "mindNodeId": "String",
+    "noteContent": "String",
+    "noteType": "int",
+    "childNodeNum": "int",
+    "parentNodeId": "String",
+    "tag": "String",
+    "syncTaskId": "String",
+    "isAdd": "boolean"
+  }]
+}

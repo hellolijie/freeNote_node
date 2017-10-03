@@ -30,5 +30,6 @@ module.exports = {
     Words : Words,
     Note: Note,
     Tag: Tag,
-    MindNode: MindNode
+    MindNode: MindNode,
+    sequelize: sequelize
 }

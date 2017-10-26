@@ -15,16 +15,19 @@ module.exports = {
      * @param tag               //标签
      * @param syncTaskId        //更新任务标识ID
      */
-    addNode : function (mindNodeId, noteContent, noteType, childNodeNum, parentNodeId, tag, syncTaskId) {
+    addNode : function (mindNodeId, noteContent, noteType, childNodeNum, parentNodeId, tag, syncTaskId, t) {
         return MindNote.create({
-            mindNodeId: mindNodeId,
-            noteContent: noteContent,
-            noteType: noteType,
-            childNodeNum: childNodeNum,
-            parentNodeId: parentNodeId,
-            tag: tag,
-            syncTaskId: syncTaskId
-        })
+                mindNodeId: mindNodeId,
+                noteContent: noteContent,
+                noteType: noteType,
+                childNodeNum: childNodeNum,
+                parentNodeId: parentNodeId,
+                tag: tag,
+                syncTaskId: syncTaskId
+            },
+            {
+                transaction: t
+            })
     },
 
     /**
@@ -38,7 +41,7 @@ module.exports = {
      * @param syncTaskId
      * @returns {Promise.<Array.<affectedCount, affectedRows>>|*}
      */
-    updateNode : function (mindNodeId, noteContent, noteType, childNodeNum, parentNodeId, tag, syncTaskId) {
+    updateNode : function (mindNodeId, noteContent, noteType, childNodeNum, parentNodeId, tag, syncTaskId, t) {
         return MindNote.update({
                 noteContent: noteContent,
                 noteType: noteType,
@@ -49,6 +52,9 @@ module.exports = {
             },
             {
                 mindNodeId: mindNodeId
+            },
+            {
+                transaction: t
             })
     },
 

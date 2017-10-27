@@ -1,14 +1,27 @@
-{
-  "url": "/sync/push",
+[
+  {
+    "url": "/sync/push",    //同步
 
-  "mindNode":[{
-    "mindNodeId": "String",
-    "noteContent": "String",
-    "noteType": "int",
-    "childNodeNum": "int",
-    "parentNodeId": "String",
-    "tag": "String",
-    "syncTaskId": "String",
-    "isAdd": "boolean"
-  }]
-}
+    "mindNode":[{
+      "mindNodeId": "String",
+      "noteContent": "String",
+      "noteType": "int",
+      "childNodeNum": "int",
+      "parentNodeId": "String",
+      "tag": "String",
+      "syncTaskId": "String",
+      "isAdd": "boolean"
+    }]
+  },
+
+  {
+    "url": "/sync/pull",    //更新
+
+    "startSyncTaskId": "String",
+    "endSyncTaskId": "String"
+  }
+]
+
+
+
+
